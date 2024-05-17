@@ -1,5 +1,6 @@
 name : hello mr fartoot
 
+on : [push]
 jobs:
   first_job:
     runs-on: ubuntu-latest
