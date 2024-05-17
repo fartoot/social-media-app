@@ -1,0 +1,41 @@
+version: '3'
+services:
+  
+  db:
+    image: mysql
+
+    ports:
+      - 3306:3306
+
+    environment:
+      - MYSQL_ROOT_PASSWORD=password123
+      - MYSQL_DATABASE=fastAPI
+    
+    volumes:
+      - mysql-db:/var/lib/mysql
+ 
+  api:
+    depends_on:
+      - db
+      
+    image: fartoot/fastapi-api:1.0 
+
+    ports:
+      - 8000:8000
+    
+    environment:
+      - DATABASE_HOSTNAME=db
+      - DATABASE_PORT=3306
+      - DATABASE_PASSWORD=password123
+      - DATABASE_NAME=fastAPI
+      - DATABASE_USERNAME=root
+      - SECRET_KEY=fb014323d18709100e47fc9b407b61e522676ea533e2dbd80eeaeac56866ef4a
+      - ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=60 
+
+    command: sh -c "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000" 
+     
+    restart: unless-stopped
+
+volumes:
+  mysql-db:

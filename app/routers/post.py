@@ -17,7 +17,7 @@ def get_posts(db: Session = Depends(get_db), user_id: int = Depends(oauth2.verif
     return posts
 
 
-@router.post("/", status_code=200)
+@router.post("/", status_code=201)
 def create_post(post: schemas.CreatePost, db: Session = Depends(get_db), user_id: int = Depends(oauth2.verify_access_token)):
     created_post = models.Post(owner_id= user_id, **post.dict())
     db.add(created_post)
@@ -36,31 +36,38 @@ def get_post(id: int, db: Session = Depends(get_db), user_id: int = Depends(oaut
         return Response(status_code=404)
     
     
-@router.delete("/{id}", status_code=200, response_model=schemas.ResponsePost)
+@router.delete("/{id}", status_code=204)
 def delete_post(id: int, db: Session = Depends(get_db), user_id: int= Depends(oauth2.verify_access_token)):
     post = db.query(models.Post).filter(models.Post.id == id).first()
+    if post == None:
+        raise HTTPException(status_code=404, detail=f"post with id: {id} does not exist")
+        
     if post.owner_id != user_id:
         raise HTTPException(status_code=403, detail="Not authorized to perform request action")
     if post:
         db.delete(post)
-        db.commit()
-        return post
+        db.commit() 
+        return Response(status_code=204) 
     else:
         return Response(status_code=404)
 
     
-@router.put("/{id}", response_model=schemas.ResponsePost)
-def update_post(id: int,post: schemas.UpdatePost, db: Session = Depends(get_db), user_id: int = Depends(oauth2.verify_access_token)):
+@router.put("/{id}",status_code=200, response_model=schemas.ResponsePost)
+def update_post(id: int,updated_post: schemas.UpdatePost, db: Session = Depends(get_db), user_id: int = Depends(oauth2.verify_access_token)):
     
     post_found = db.query(models.Post).filter(models.Post.id == id)
-    owner_id = post_found.first().owner_id
-    if owner_id != user_id:
+    post = post_found.first()
+    
+    if post == None:
+        raise HTTPException(status_code=404, detail=f"post with id: {id} does not exist")
+
+    if post.owner_id != user_id:
         raise HTTPException(status_code=403, detail="Not authorized to perform request action")
     
     if post:
-        post_found.update(post.dict())
-        post_found.update({"owner_id":user_id})
+        post_found.update(updated_post.dict())
+        # post_found.update({"owner_id":user_id})
         db.commit()
-        return post
+        return post 
     else:
         return Response(status_code=404)
