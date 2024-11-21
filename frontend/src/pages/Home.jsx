@@ -1,10 +1,10 @@
+import PostCard from "../components/PostCard" 
+
 function Home() {
 
   return (
     <>
-      <div>
-       Home 
-      </div>
+      <PostCard />
     </>
   )
 }

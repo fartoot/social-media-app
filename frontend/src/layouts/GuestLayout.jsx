@@ -1,14 +1,16 @@
 import { Outlet } from "react-router-dom";
-import Nav from '../components/Nav.jsx'
+import Header from "../components/Header.jsx";
 
 function GuestLayout() {
   return (
     <>
-      <h1>Guest Layout</h1>
-      <Nav />
-      <Outlet />
+      <div>
+        <Header />
+        <div className="max-w-3xl mx-auto">
+          <Outlet />
+        </div>
+      </div>
     </>
-
   );
 }
 
