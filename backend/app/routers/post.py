@@ -13,7 +13,7 @@ router = APIRouter(
 
 @router.get("/",status_code=200, response_model=List[schemas.ResponsePost])
 def get_posts(db: Session = Depends(get_db), user_id: int = Depends(oauth2.verify_access_token),limit: int = 10,search: str = ""):
-    posts = db.query(models.Post).filter(models.Post.title.contains(search)).limit(limit).all()
+    posts = db.query(models.Post).filter(models.Post.content.contains(search)).limit(limit).all()
     return posts
 
 
