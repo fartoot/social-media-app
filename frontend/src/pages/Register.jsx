@@ -1,7 +1,9 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 const formSchema = z.object({
   firstname: z.string().min(3).max(30),
@@ -12,6 +14,13 @@ const formSchema = z.object({
 });
 function Register() {
   const [isError, setIsError] = useState(false);
+  const navigate = useNavigate()
+  const {accessToken} = useContext(AuthContext)
+  useEffect(()=>{
+    if(accessToken){
+      navigate("/")
+    }
+  },[])
   const {
     register,
     handleSubmit,

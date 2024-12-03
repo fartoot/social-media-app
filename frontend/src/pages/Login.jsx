@@ -1,9 +1,9 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { Link ,useNavigate } from "react-router-dom";
 
 const formSchema = z.object({
   username: z.string().min(3).max(50),
@@ -13,6 +13,11 @@ function Login() {
   const [isError, setIsError] = useState(false);
   const {accessToken, setAccessToken} = useContext(AuthContext)
   const navigate = useNavigate()
+  useEffect(()=>{
+    if(accessToken){
+      navigate("/")
+    }
+  },[])
   const {
     register,
     handleSubmit,
@@ -33,7 +38,7 @@ function Login() {
       const data = await response.json();
       console.log(data);
       setAccessToken(data.access_token)
-      navigate("/post")
+      navigate("/")
     } catch (error) {
       setIsError(true)
       console.error(error);
@@ -41,9 +46,6 @@ function Login() {
   };
   return (
     <>
-      <div>
-      {accessToken}
-      </div>
       <div className="mt-52 flex flex-col items-center justify-center w-full">
         {
           isError && <div className="mb-4 text-red-500">Invalid username or password. Please try again.</div>
@@ -87,6 +89,10 @@ function Login() {
             </button>
           </div>
         </form>
+        <p className="text-gray-400">
+          <p className="inline me-1">Don't have an account?</p>
+          <Link className="inline text-gray-400 underline hover:text-gray-500" to="/register">Create one</Link>
+        </p>
       </div>
     </>
   );
