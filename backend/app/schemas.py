@@ -4,7 +4,6 @@ from typing import Optional
 
     
 class PostBase(BaseModel):
-    title : str 
     content : str
     published: Optional[bool] = True    
 
@@ -29,7 +28,6 @@ class ResponseUser(UserBase):
     #     orm_mode = True
 
 class ResponsePost(BaseModel):
-    title : str 
     content : str
     published: bool
     owner: ResponseUser 
@@ -43,6 +41,11 @@ class ResponsePost(BaseModel):
 
 
 class CreateUser(UserBase):
+    photo: str | None = "profile.png"
+    bio: str | None
+    first_name: str
+    last_name : str
+    username: str
     password : str
 
 
