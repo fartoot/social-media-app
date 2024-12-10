@@ -21,6 +21,9 @@ class UserBase(BaseModel):
 class ResponseUser(UserBase):
     id: int
     created_at: datetime
+    first_name: str
+    last_name: str
+    username: str
 
     model_config = ConfigDict(from_attributes=True)
 
