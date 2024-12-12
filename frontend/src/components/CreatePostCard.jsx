@@ -3,20 +3,23 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 const formSchema = z.object({
   content: z.string().min(1).max(200),
 });
 
-function CreatePostCard() {
+function CreatePostCard({refresh, setRefresh}) {
   const { accessToken } = useContext(AuthContext)
   const {
      register,
      handleSubmit,
      formState: { errors },
+     reset
    } = useForm({
      resolver: zodResolver(formSchema),
    });
+  const navigate = useNavigate()
    const onSubmit = async (data) => {
      const url = 'http://127.0.0.1:8000/posts';
       const options = {
@@ -33,6 +36,8 @@ function CreatePostCard() {
      try {
        const response = await fetch(url, options);
        const data = await response.json();
+       setRefresh(!refresh)
+       reset()
      } catch (error) {
        console.error(error);
      }

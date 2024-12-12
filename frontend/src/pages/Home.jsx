@@ -2,8 +2,10 @@ import PostCard from "../components/PostCard"
 import { useState, useEffect, useContext } from "react"
 import { AuthContext } from "../context/AuthContext"
 import moment from"moment";
+import { useOutletContext } from "react-router-dom";
 
 function Home() {
+  const { refresh } = useOutletContext();
   const [posts, setPosts] = useState([])
   const { accessToken } = useContext(AuthContext)
   useEffect(() => {
@@ -20,11 +22,11 @@ function Home() {
       console.log(postsData)
     }
     fetchPosts()
-  }, [accessToken])
+  }, [accessToken, refresh])
 
   return (
     <>
-      {posts.map((data) => <PostCard key={data.id} firstName={data.owner.first_name} lastName={data.owner.last_name} username={data.owner.username} createdAt={moment(data.owner.created_at).fromNow()} content={data.content}  /> )}
+      {posts.map((data) => <PostCard key={data.id} slug={data.owner.id} firstName={data.owner.first_name} lastName={data.owner.last_name} username={data.owner.username} createdAt={moment(data.created_at).fromNow()} content={data.content}  /> )}
     </>
   )
 }
