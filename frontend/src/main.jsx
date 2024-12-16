@@ -20,8 +20,8 @@ createRoot(document.getElementById("root")).render(
           <Route path="/" element={ <ProtectRoute> <WrapLayout /> </ProtectRoute> } >
             <Route path="/" element={<GuestLayout />}>
               <Route index element={<Home />} />
+              <Route path="/profile" element={<Profile />} />
             </Route>
-            <Route path="/profile" element={<Profile />} />
           </Route>
           <Route path="/" element={<WrapLayout />}>
             <Route path="/login" element={<Login />} />

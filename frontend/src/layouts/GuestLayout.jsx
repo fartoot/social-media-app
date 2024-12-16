@@ -1,9 +1,12 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import ProfileCard from "../components/ProfileCard.jsx"
 import CreatePostCard from "../components/CreatePostCard.jsx";
 import { useState } from "react";
 function GuestLayout() {
   const [refresh, setRefresh] = useState(false)
+  const location = useLocation()
+  const forbindenPlaces = ["profile"]
+  console.log(location.pathname.split("/")[1])
   return (
     <>
       <div className="w-full hidden lg:block space-y-20 self-start sticky top-28">
@@ -29,7 +32,9 @@ function GuestLayout() {
         </div>
       </div>
       <div className="max-w-3xl w-full mx-auto">
-        <CreatePostCard className="xl:hidden" refresh={refresh} setRefresh={setRefresh}/>
+        { forbindenPlaces.includes(location.pathname.split("/")[1]) || (
+        <CreatePostCard className="xl:hidden" refresh={refresh} setRefresh={setRefresh}/>  
+        )}
         <Outlet context={{ refresh }} />
       </div>
       <div className="w-full hidden xl:inline-block space-y-5 self-start sticky top-28">

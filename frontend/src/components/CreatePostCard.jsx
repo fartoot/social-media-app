@@ -47,7 +47,7 @@ function CreatePostCard({className, refresh, setRefresh}) {
     <>
       <form 
         onSubmit={handleSubmit(onSubmit)}
-        className={`${className} bg-gray-100 rounded-3xl p-6 space-y-3 mx-auto`}
+        className={`${className} bg-gray-100 rounded-3xl p-6 space-y-3 mx-auto mb-7`}
       >
         <div className="flex justify-between items-center">
           <h2 className="text-left w-full text-gray-800 ms-2">Create Post</h2>
