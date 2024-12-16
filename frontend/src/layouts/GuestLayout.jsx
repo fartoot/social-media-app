@@ -6,7 +6,7 @@ function GuestLayout() {
   const [refresh, setRefresh] = useState(false)
   return (
     <>
-      <div className="w-full hidden lg:inline-block space-y-20">
+      <div className="w-full hidden lg:block space-y-20 self-start sticky top-28">
         <ProfileCard fullName="Dani Taylor" username="@danitaylor" bio="Lorem, ipsum dolor sit amet consectetur adipisicing elit dolor..." />
         
         <div className="w-96 bg-gray-100 rounded-3xl p-8 space-y-2 flex flex-col items-center mx-auto">
@@ -28,11 +28,12 @@ function GuestLayout() {
 
         </div>
       </div>
-      <div className="max-w-3xl w-full mx-auto space-y-4">
+      <div className="max-w-3xl w-full mx-auto">
+        <CreatePostCard className="xl:hidden" refresh={refresh} setRefresh={setRefresh}/>
         <Outlet context={{ refresh }} />
       </div>
-      <div className="w-full hidden xl:inline-block space-y-5">
-        <CreatePostCard refresh={refresh} setRefresh={setRefresh}/>
+      <div className="w-full hidden xl:inline-block space-y-5 self-start sticky top-28">
+        <CreatePostCard className="w-96" refresh={refresh} setRefresh={setRefresh}/>
         <div className="w-96 bg-gray-100 rounded-3xl p-8 space-y-3 flex flex-col items-center mx-auto">
           <h2 className="text-left w-full text-gray-800 ms-2 mb-2">Popular Posts</h2>
           {

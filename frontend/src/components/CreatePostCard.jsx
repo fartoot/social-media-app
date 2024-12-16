@@ -9,7 +9,7 @@ const formSchema = z.object({
   content: z.string().min(1).max(200),
 });
 
-function CreatePostCard({refresh, setRefresh}) {
+function CreatePostCard({className, refresh, setRefresh}) {
   const { accessToken } = useContext(AuthContext)
   const {
      register,
@@ -47,8 +47,8 @@ function CreatePostCard({refresh, setRefresh}) {
     <>
       <form 
         onSubmit={handleSubmit(onSubmit)}
+        className={`${className} bg-gray-100 rounded-3xl p-6 space-y-3 mx-auto`}
       >
-      <div className="w-96 bg-gray-100 rounded-3xl p-6 space-y-3 mx-auto">
         <div className="flex justify-between items-center">
           <h2 className="text-left w-full text-gray-800 ms-2">Create Post</h2>
           <button className="bg-gray-300 py-2 px-3 rounded-full text-sm">Publish</button>
@@ -59,7 +59,6 @@ function CreatePostCard({refresh, setRefresh}) {
                     {errors.content.message}
           </div>
         )}
-      </div>
       </form>
     </>
   )
