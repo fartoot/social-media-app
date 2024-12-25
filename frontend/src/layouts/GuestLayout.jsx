@@ -1,16 +1,44 @@
 import { Outlet, useLocation } from "react-router-dom";
 import ProfileCard from "../components/ProfileCard.jsx"
 import CreatePostCard from "../components/CreatePostCard.jsx";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { ProfileContext } from "../context/ProfileContext.jsx";
+import { AuthContext } from "../context/AuthContext.jsx";
+
 function GuestLayout() {
   const [refresh, setRefresh] = useState(false)
   const location = useLocation()
   const forbindenPlaces = ["profile"]
-  console.log(location.pathname.split("/")[1])
+  const {accessToken} = useContext(AuthContext)
+  const {profile, setProfile} = useContext(ProfileContext)
+  
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+          const options = {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${accessToken}`
+            }
+          };
+          const response = await fetch("http://127.0.0.1:8000/users/", options)
+          const profileData = await response.json()
+          if (response.ok){
+            setProfile(profileData)
+          }
+      }
+      catch (error) {
+        console.log("error", error)
+      }
+    }
+      fetchPosts()
+  }, [accessToken])
+  
+  
   return (
     <>
       <div className="w-full hidden lg:block space-y-20 self-start sticky top-28">
-        <ProfileCard fullName="Dani Taylor" username="@danitaylor" bio="Lorem, ipsum dolor sit amet consectetur adipisicing elit dolor..." />
+        <ProfileCard id={profile.id} fullName={ `${profile.first_name} ${profile.last_name}` } username={profile.username} bio={profile.bio} />
         
         <div className="w-96 bg-gray-100 rounded-3xl p-8 space-y-2 flex flex-col items-center mx-auto">
           <h2 className="text-left w-full text-gray-800 ms-2 mb-2">Recent Liked</h2>

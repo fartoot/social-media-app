@@ -10,6 +10,7 @@ import Register from "./pages/Register.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import ProtectRoute from "./helpers/ProtectRoute.jsx";
 import Profile from "./pages/Profile.jsx";
+import { ProfileProvider } from "./context/ProfileContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <AuthProvider>
@@ -17,10 +18,19 @@ createRoot(document.getElementById("root")).render(
       <BrowserRouter>
         <Routes>
           {/* WrapLayout wrapped by ProtectRoute and not as tag to respect the rule : Only Route components can be a child of Routes. */}
-          <Route path="/" element={ <ProtectRoute> <WrapLayout /> </ProtectRoute> } >
+          <Route
+            path="/"
+            element={
+                <ProtectRoute>
+                  <ProfileProvider>
+                    <WrapLayout />
+                  </ProfileProvider>
+                </ProtectRoute>
+            }
+          >
             <Route path="/" element={<GuestLayout />}>
               <Route index element={<Home />} />
-              <Route path="/profile" element={<Profile />} />
+              <Route path="/profile/:id" element={<Profile />} />
             </Route>
           </Route>
           <Route path="/" element={<WrapLayout />}>
