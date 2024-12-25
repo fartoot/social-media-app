@@ -5,6 +5,7 @@ from ..database import get_db
 from .. import models
 from .. import schemas
 from .. import utils
+from .. import oauth2 
 
 router = APIRouter(
     prefix="/users",
@@ -27,6 +28,14 @@ def create_user(user: schemas.CreateUser, db: Session = Depends(get_db)):
 @router.get("/{id}",status_code=200, response_model=schemas.ResponseUser)
 def get_user(id: int, db: Session = Depends(get_db)):
     user = db.query(models.User).filter(models.User.id == id).first()
+    if user:
+            return user
+    else:
+        return Response(status_code=404)
+    
+@router.get("/",status_code=201,response_model=schemas.ResponseUser)
+def get_profile(user_id: int = Depends(oauth2.verify_access_token), db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.id == user_id).first()
     if user:
             return user
     else:
