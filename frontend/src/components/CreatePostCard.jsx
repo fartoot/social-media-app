@@ -47,13 +47,13 @@ function CreatePostCard({className, refresh, setRefresh}) {
     <>
       <form 
         onSubmit={handleSubmit(onSubmit)}
-        className={`${className} bg-gray-100 rounded-3xl p-6 space-y-3 mx-auto mb-7`}
+        className={`${className} bg-gray-50 border rounded-3xl p-6 space-y-3 mx-auto mb-7`}
       >
         <div className="flex justify-between items-center">
           <h2 className="text-left w-full text-gray-800 ms-2">Create Post</h2>
-          <button className="bg-gray-300 py-2 px-3 rounded-full text-sm">Publish</button>
+          <button className="bg-gray-100 border py-2 px-3 rounded-full text-sm">Publish</button>
         </div>
-        <textarea {...register("content")} rows={4} placeholder="Something..." className="bg-gray-200 text-gray-800 rounded-2xl w-full px-4 py-2"></textarea>
+        <textarea {...register("content")} rows={4} placeholder="Something..." className="bg-white border text-gray-800 rounded-2xl w-full px-4 py-2"></textarea>
         {errors.content && (
           <div className="text-red-500 text-xs italic">
                     {errors.content.message}

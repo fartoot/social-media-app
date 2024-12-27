@@ -37,15 +37,15 @@ function Profile() {
   
   return (
     <>
-      <div className="bg-gray-100 rounded-3xl">
-        <div className="bg-gray-300 w-full h-52 rounded-3xl pt-10 ">
+      <div className="bg-gray-50 border rounded-3xl">
+        <div className="bg-gray-200 w-full h-52 rounded-3xl pt-10 ">
         </div>
-        <div className="bg-gray-300 w-44 h-44 rounded-full mx-auto border-8 border- border-white -mt-20">
+        <div className="bg-gray-200 w-44 h-44 rounded-full mx-auto border-8 border- border-white -mt-20">
         </div>
         <div className="py-4 px-5 text-center">
           <div className="mb-4">
             <h2 className="text-2xl">
-              { profileData.first_name } 
+              { profileData.first_name } { profileData.last_name }
             </h2>
             <p>@{ profileData.username}</p>
           </div>
