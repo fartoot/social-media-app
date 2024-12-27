@@ -7,6 +7,8 @@ import { AuthContext } from "../context/AuthContext.jsx";
 
 function GuestLayout() {
   const [refresh, setRefresh] = useState(false)
+  const [popularPosts, setPopularPosts] = useState([])
+  
   const location = useLocation()
   const forbindenPlaces = ["profile"]
   const {accessToken} = useContext(AuthContext)
@@ -34,17 +36,41 @@ function GuestLayout() {
       fetchPosts()
   }, [accessToken])
   
+  useEffect(()=>{
+    const getPopularPosts = async () => {
+      const url = 'http://127.0.0.1:8000/posts/popular/';
+      const options = {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        }
+      };
+      
+      try {
+        const response = await fetch(url, options);
+        const data = await response.json();
+        if (response.ok){
+          setPopularPosts(data)
+        }
+        console.log(data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    getPopularPosts()
+  },[])
+  
   
   return (
     <>
       <div className="w-full hidden lg:block space-y-20 self-start sticky top-28">
         <ProfileCard id={profile.id} fullName={ `${profile.first_name} ${profile.last_name}` } username={profile.username} bio={profile.bio} />
         
-        <div className="w-96 bg-gray-100 rounded-3xl p-8 space-y-2 flex flex-col items-center mx-auto">
+        <div className="w-96 bg-gray-50 border rounded-3xl p-8 space-y-2 flex flex-col items-center mx-auto">
           <h2 className="text-left w-full text-gray-800 ms-2 mb-2">Recent Liked</h2>
           {
-            [1,1,1,1,1].map((data)=>(
-              <div key={data.key} className="bg-gray-200 text-gray-800 rounded-full w-full px-4 py-2 flex justify-between items-center">
+            [1,1,1,1].map((data)=>(
+              <div key={data.key} className="bg-gray-100 border text-gray-800 rounded-full w-full px-4 py-2 flex justify-between items-center">
                 <div className="space-x-1">
                   <span className="text-sm">James Adam</span>
                   <span className="text-xs text-gray-600">@jamesadam</span>
@@ -56,29 +82,33 @@ function GuestLayout() {
               
             ))
           }
-
         </div>
       </div>
       <div className="max-w-3xl w-full mx-auto">
         { forbindenPlaces.includes(location.pathname.split("/")[1]) || (
         <CreatePostCard className="xl:hidden" refresh={refresh} setRefresh={setRefresh}/>  
         )}
-        <Outlet context={{ refresh }} />
+        <Outlet context={{ refresh , setRefresh}} />
       </div>
       <div className="w-full hidden xl:inline-block space-y-5 self-start sticky top-28">
         <CreatePostCard className="w-96" refresh={refresh} setRefresh={setRefresh}/>
-        <div className="w-96 bg-gray-100 rounded-3xl p-8 space-y-3 flex flex-col items-center mx-auto">
+        <div className="w-96 bg-gray-50 border rounded-3xl p-8 space-y-3 flex flex-col items-center mx-auto">
           <h2 className="text-left w-full text-gray-800 ms-2 mb-2">Popular Posts</h2>
           {
-            [1,1,1].map((data)=>(
-              <div key={data.key} className="bg-gray-200 text-gray-800 rounded-2xl w-full px-4 py-2">
+            popularPosts.map((data)=>(
+              <div key={data.key} className="bg-white border text-gray-600 rounded-2xl w-full px-4 py-2">
                 <div className="flex justify-between items-center">
                   <div className="space-x-1 mb-2">
-                    <span className="text-sm">James Adam</span>
+                    <span className="text-xs capitalize">{data.owner.first_name} { data.owner.last_name} </span>
                   </div>
-                  <span className="text-sm">2.4K ⭐</span>
+                  <div>
+                  <span className="text-sm -me-1">{data.votes}</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" className="inline fill-gray-600" viewBox="0 0 256 256">
+                      <path d="M173.66,138.34a8,8,0,0,1-11.32,11.32L128,115.31,93.66,149.66a8,8,0,0,1-11.32-11.32l40-40a8,8,0,0,1,11.32,0Z"></path>
+                    </svg>
+                  </div>
                 </div>
-                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, non alias? Voluptates, iusto</p>
+                <p className="text-gray-700 text-sm">{data.content} </p>
             </div>
             ))
           }

@@ -5,7 +5,7 @@ import moment from"moment";
 import { useOutletContext } from "react-router-dom";
 
 function Home() {
-  const { refresh } = useOutletContext();
+  const { refresh, setRefresh } = useOutletContext();
   const [posts, setPosts] = useState([])
   const { accessToken } = useContext(AuthContext)
   useEffect(() => {
@@ -26,7 +26,7 @@ function Home() {
 
   return (
     <>
-      {posts.map((data) => <PostCard key={data.id} slug={data.owner.id} firstName={data.owner.first_name} lastName={data.owner.last_name} username={data.owner.username} createdAt={moment(data.created_at).fromNow()} content={data.content}  /> )}
+      {posts.map((data) => <PostCard key={data.id} slug={data.owner.id} firstName={data.owner.first_name} lastName={data.owner.last_name} username={data.owner.username} createdAt={moment(data.created_at).fromNow()} content={data.content} votes={data.votes} post_id={data.id} refresh={refresh} setRefresh={ setRefresh}  /> )}
     </>
   )
 }
