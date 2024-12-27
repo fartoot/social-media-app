@@ -18,8 +18,14 @@ class UpdatePost(PostBase):
 class UserBase(BaseModel):
     email : EmailStr
 
-class Vote(BaseModel):
+
+class CreateVote(BaseModel):
     post_id: int 
+    model_config = ConfigDict(from_attributes=True)
+    
+class Vote(CreateVote):
+    created_at: datetime
+    model_config = ConfigDict(from_attributes=True)
     
 class ResponseUser(UserBase):
     id: int
@@ -29,14 +35,22 @@ class ResponseUser(UserBase):
     bio: str
     model_config = ConfigDict(from_attributes=True)
 
-class ResponsePost(BaseModel):
+
+class ResponsePostWithoutVote(BaseModel):
     id: int
     content : str
     published: bool
     created_at: datetime
     owner: ResponseUser 
-    votes: int = 0
     model_config = ConfigDict(from_attributes=True)
+    
+class ResponsePostWithVote(BaseModel):
+    Post: ResponsePostWithoutVote 
+    Vote: Vote
+    model_config = ConfigDict(from_attributes=True)
+    
+class ResponsePost(ResponsePostWithoutVote):
+    votes: int = 0
 
 
 

@@ -80,6 +80,26 @@ def popular(db: Session = Depends(get_db), user_id: int = Depends(oauth2.verify_
 
     return result_posts
     
+    
+@router.get("/recent",status_code=200, response_model=List[schemas.ResponsePostWithVote])
+def get_recent_posts_vote(db: Session = Depends(get_db), user_id: int = Depends(oauth2.verify_access_token)):
+    posts = db.query(
+        models.Post,
+        models.Vote
+    ).join(
+        models.Vote,
+        models.Post.id == models.Vote.post_id
+    ).join(
+        models.User,
+        models.Post.owner_id == models.User.id 
+    ).filter(
+        models.Vote.user_id == user_id
+    ).order_by(
+        models.Vote.created_at.desc()
+    ).limit(6).all()
+    
+    return posts
+
 @router.post("/", status_code=201)
 def create_post(post: schemas.CreatePost, db: Session = Depends(get_db), user_id: int = Depends(oauth2.verify_access_token)):
     created_post = models.Post(owner_id= user_id, **post.dict())

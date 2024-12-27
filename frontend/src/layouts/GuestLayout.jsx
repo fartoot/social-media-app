@@ -4,10 +4,16 @@ import CreatePostCard from "../components/CreatePostCard.jsx";
 import { useContext, useEffect, useState } from "react";
 import { ProfileContext } from "../context/ProfileContext.jsx";
 import { AuthContext } from "../context/AuthContext.jsx";
+import moment from"moment";
+
+const moment_short = (timeAgo) =>{
+  return timeAgo.replace("a few seconds ago","just now").replace("a minute","1m").replace(" hours", "h").replace(" minutes", "m").replace(" days", "d").replace(" seconds", "s").replace(" years", "y");
+}
 
 function GuestLayout() {
   const [refresh, setRefresh] = useState(false)
   const [popularPosts, setPopularPosts] = useState([])
+  const [recentPosts, setRecentPosts] = useState([])
   
   const location = useLocation()
   const forbindenPlaces = ["profile"]
@@ -52,7 +58,6 @@ function GuestLayout() {
         if (response.ok){
           setPopularPosts(data)
         }
-        console.log(data);
       } catch (error) {
         console.error(error);
       }
@@ -60,6 +65,28 @@ function GuestLayout() {
     getPopularPosts()
   },[])
   
+  useEffect(() => {
+    const getRecentPostsByMe = async () => {
+      const url = 'http://127.0.0.1:8000/posts/recent';
+      const options = {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${accessToken}` 
+        }
+      };
+      
+      try {
+        const response = await fetch(url, options);
+        const data = await response.json();
+        if (response.ok){
+          setRecentPosts(data)
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    getRecentPostsByMe()
+  }, [refresh])
   
   return (
     <>
@@ -69,17 +96,16 @@ function GuestLayout() {
         <div className="w-96 bg-gray-50 border rounded-3xl p-8 space-y-2 flex flex-col items-center mx-auto">
           <h2 className="text-left w-full text-gray-800 ms-2 mb-2">Recent Liked</h2>
           {
-            [1,1,1,1].map((data)=>(
+            recentPosts.map((data)=>(
               <div key={data.key} className="bg-gray-100 border text-gray-800 rounded-full w-full px-4 py-2 flex justify-between items-center">
                 <div className="space-x-1">
-                  <span className="text-sm">James Adam</span>
-                  <span className="text-xs text-gray-600">@jamesadam</span>
+                  <span className="text-sm capitalize">{data.Post.owner.first_name} { data.Post.owner.last_name }</span>
+                  <span className="text-xs text-gray-600">@{ data.Post.owner.username }</span>
                 </div>
-                <span className="text-sm">
-                  2h ago
+                <span className="text-xs text-gray-600">
+                  { moment_short(moment(data.Vote.created_at).fromNow())}
                 </span>
             </div>
-              
             ))
           }
         </div>

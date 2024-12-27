@@ -36,3 +36,4 @@ class Vote(Base):
     
     post_id = Column(Integer, ForeignKey("posts.id", ondelete="CASCADE"),nullable=False,primary_key=True)
     user_id= Column(Integer, ForeignKey("users.id", ondelete="CASCADE"),nullable=False,primary_key=True)
+    created_at = Column(TIMESTAMP(timezone=True),nullable=False,server_default=text("now()"))
