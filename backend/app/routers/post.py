@@ -1,6 +1,7 @@
 from fastapi import Depends, HTTPException, Response , APIRouter
 from typing import List
 from sqlalchemy.orm import Session
+from sqlalchemy import func 
 from ..database import get_db
 from .. import models, schemas, oauth2
 
@@ -12,11 +13,73 @@ router = APIRouter(
 
 
 @router.get("/",status_code=200, response_model=List[schemas.ResponsePost])
-def get_posts(db: Session = Depends(get_db), user_id: int = Depends(oauth2.verify_access_token),limit: int = 10,search: str = ""):
-    posts = db.query(models.Post).filter(models.Post.content.contains(search)).order_by(models.Post.created_at.desc()).limit(limit).all()
-    return posts
+def get_posts(db: Session = Depends(get_db), user_id: int = Depends(oauth2.verify_access_token),limit: int = 100,search: str = ""):
+    posts = db.query(
+        models.Post,
+        func.count(models.Vote.post_id).label("votes")
+    ).join(
+        models.User,
+        models.Post.owner_id == models.User.id
+    ).outerjoin(
+        models.Vote,
+        models.Post.id == models.Vote.post_id
+    ).group_by(
+        models.Post.id,
+        models.User.id
+    ).filter(
+        models.Post.content.contains(search)
+    ).order_by(
+        models.Post.created_at.desc()
+    ).limit(limit).all()
+    
+    result_posts = []
+    for post, votes in posts:
+        post_dict = {
+            "id": post.id,
+            "content": post.content,
+            "published": post.published,
+            "created_at": post.created_at,
+            "owner": post.owner,
+            "votes": votes
+        }
+        result_posts.append(post_dict)
+    
+    return result_posts
 
+@router.get("/popular",status_code=200, response_model=List[schemas.ResponsePost])
+def popular(db: Session = Depends(get_db), user_id: int = Depends(oauth2.verify_access_token), search: str = ""):
+    posts = db.query(
+        models.Post,
+        func.count(models.Vote.post_id).label("votes")
+    ).join(
+        models.User,
+        models.Post.owner_id == models.User.id
+    ).outerjoin(
+        models.Vote,
+        models.Post.id == models.Vote.post_id
+    ).group_by(
+        models.Post.id,
+        models.User.id
+    ).filter(
+        models.Post.content.contains(search)
+    ).order_by(
+        func.count(models.Vote.post_id).desc()
+    ).limit(4).all()
 
+    result_posts = []
+    for post, votes in posts:
+        post_dict = {
+            "id": post.id,
+            "content": post.content,
+            "published": post.published,
+            "created_at": post.created_at,
+            "owner": post.owner,
+            "votes": votes
+        }
+        result_posts.append(post_dict)
+
+    return result_posts
+    
 @router.post("/", status_code=201)
 def create_post(post: schemas.CreatePost, db: Session = Depends(get_db), user_id: int = Depends(oauth2.verify_access_token)):
     created_post = models.Post(owner_id= user_id, **post.dict())
@@ -71,3 +134,4 @@ def update_post(id: int,updated_post: schemas.UpdatePost, db: Session = Depends(
         return post 
     else:
         return Response(status_code=404)
+

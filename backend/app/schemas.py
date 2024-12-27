@@ -18,29 +18,25 @@ class UpdatePost(PostBase):
 class UserBase(BaseModel):
     email : EmailStr
 
+class Vote(BaseModel):
+    post_id: int 
+    
 class ResponseUser(UserBase):
     id: int
     first_name: str
     last_name: str
     username: str
     bio: str
-
     model_config = ConfigDict(from_attributes=True)
 
-    # class Config:
-    #     orm_mode = True
-
 class ResponsePost(BaseModel):
+    id: int
     content : str
     published: bool
     created_at: datetime
     owner: ResponseUser 
+    votes: int = 0
     model_config = ConfigDict(from_attributes=True)
-
-    # class Config:
-    #     orm_mode = True
-
-
 
 
 
@@ -51,8 +47,6 @@ class CreateUser(UserBase):
     last_name : str
     username: str
     password : str
-
-
         
 
 class Login(BaseModel):
@@ -64,5 +58,3 @@ class Token(BaseModel):
     access_token: str
     token_type: str
     
-class Vote(BaseModel):
-    post_id: int
