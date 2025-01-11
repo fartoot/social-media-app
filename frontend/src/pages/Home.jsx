@@ -26,7 +26,7 @@ function Home() {
 
   return (
     <>
-      {posts.map((data) => <PostCard key={data.id} slug={data.owner.id} firstName={data.owner.first_name} lastName={data.owner.last_name} username={data.owner.username} createdAt={moment(data.created_at).fromNow()} content={data.content} votes={data.votes} post_id={data.id} refresh={refresh} setRefresh={ setRefresh}  /> )}
+      {posts.map((data) => <PostCard key={data.id} slug={data.owner.id} firstName={data.owner.first_name} lastName={data.owner.last_name} username={data.owner.username} photo={data.owner.photo} createdAt={moment(data.created_at).fromNow()} content={data.content} votes={data.votes} post_id={data.id} refresh={refresh} setRefresh={ setRefresh}  /> )}
     </>
   )
 }

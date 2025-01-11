@@ -10,6 +10,7 @@ import Register from "./pages/Register.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import ProtectRoute from "./helpers/ProtectRoute.jsx";
 import Profile from "./pages/Profile.jsx";
+import ProfileEdit from "./pages/ProfileEdit.jsx";
 import { ProfileProvider } from "./context/ProfileContext.jsx";
 
 createRoot(document.getElementById("root")).render(
@@ -31,6 +32,7 @@ createRoot(document.getElementById("root")).render(
             <Route path="/" element={<GuestLayout />}>
               <Route index element={<Home />} />
               <Route path="/profile/:id" element={<Profile />} />
+              <Route path="/profile/edit/:id" element={<ProfileEdit />} />
             </Route>
           </Route>
           <Route path="/" element={<WrapLayout />}>
