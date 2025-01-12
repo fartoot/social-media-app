@@ -1,4 +1,4 @@
-from fastapi import Depends, Response , APIRouter
+from fastapi import Depends, Response , APIRouter, HTTPException
 from typing import List
 from sqlalchemy.orm import Session
 from ..database import get_db
@@ -40,4 +40,20 @@ def get_profile(user_id: int = Depends(oauth2.verify_access_token), db: Session 
             return user
     else:
         return Response(status_code=404)
+
+@router.put("/",status_code=201,response_model=schemas.ResponseUser)
+def edit_user(updated_user : schemas.UpdateUser, user_id: int = Depends(oauth2.verify_access_token), db: Session = Depends(get_db)):
+    user_found = db.query(models.User).filter(models.User.id == user_id)
+    user = user_found.first()
     
+    if user is None:
+        raise HTTPException(status_code=404, detail=f"user with id: {id} does not exist")
+    
+    if user:
+        user_data = {**updated_user.dict()}
+        user_data["password"] = utils.hash(user_data["password"])
+        user_found.update(user_data)
+        db.commit()
+        return user
+    else:
+        return Response(status_code=404)

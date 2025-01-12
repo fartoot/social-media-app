@@ -62,7 +62,15 @@ class CreateUser(UserBase):
     last_name : str
     username: str
     password : str
-        
+
+class UpdateUser(BaseModel):
+    photo: str | None 
+    bio: str | None
+    first_name: str | None 
+    last_name : str | None 
+    username: str | None 
+    password : str | None 
+    email : str | None 
 
 class Login(BaseModel):
     email: EmailStr
