@@ -33,6 +33,7 @@ class ResponseUser(UserBase):
     last_name: str
     username: str
     bio: str
+    photo: str
     model_config = ConfigDict(from_attributes=True)
 
 

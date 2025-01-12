@@ -2,6 +2,7 @@ from sqlalchemy import Column, ForeignKey, Integer,Text, String, Boolean
 from sqlalchemy.sql.expression import text,true
 from sqlalchemy.sql.sqltypes import TIMESTAMP
 from sqlalchemy.orm import relationship
+from sqlalchemy.dialects.mysql import LONGTEXT
 from .database import Base
 
 
@@ -22,7 +23,7 @@ class User(Base):
     __tablename__ = "users"
     
     id = Column(Integer, primary_key=True,nullable=False)
-    photo = Column(String(200), nullable=True, default="profile.png")
+    photo = Column(LONGTEXT, nullable=True)
     bio = Column(String(300), nullable=True)
     first_name = Column(String(100), nullable=False)
     last_name = Column(String(100), nullable=False)
