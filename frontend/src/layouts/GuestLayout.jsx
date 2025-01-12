@@ -91,7 +91,7 @@ function GuestLayout() {
   return (
     <>
       <div className="w-full hidden lg:block space-y-20 self-start sticky top-28">
-        <ProfileCard id={profile.id} fullName={ `${profile.first_name} ${profile.last_name}` } username={profile.username} bio={profile.bio} />
+        <ProfileCard id={profile.id} fullName={ `${profile.first_name} ${profile.last_name}` } username={profile.username} bio={profile.bio} photo={profile.photo} />
         
         <div className="w-96 bg-gray-50 border rounded-3xl p-8 space-y-2 flex flex-col items-center mx-auto">
           <h2 className="text-left w-full text-gray-800 ms-2 mb-2">Recent Liked</h2>
