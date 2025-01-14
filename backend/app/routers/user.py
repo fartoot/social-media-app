@@ -50,8 +50,9 @@ def edit_user(updated_user : schemas.UpdateUser, user_id: int = Depends(oauth2.v
         raise HTTPException(status_code=404, detail=f"user with id: {id} does not exist")
     
     if user:
-        user_data = {**updated_user.dict()}
-        user_data["password"] = utils.hash(user_data["password"])
+        user_data = {**updated_user.dict(exclude_none=True)}
+        if user_data.get("password"):
+            user_data["password"] = utils.hash(user_data["password"])
         user_found.update(user_data)
         db.commit()
         return user

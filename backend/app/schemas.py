@@ -64,13 +64,13 @@ class CreateUser(UserBase):
     password : str
 
 class UpdateUser(BaseModel):
-    photo: str | None 
-    bio: str | None
-    first_name: str | None 
-    last_name : str | None 
-    username: str | None 
-    password : str | None 
-    email : str | None 
+    photo: str | None = None
+    bio: str | None = None
+    first_name: str | None = None 
+    last_name : str | None  = None
+    username: str | None  = None
+    password : str | None  = None
+    email : str | None  = None
 
 class Login(BaseModel):
     email: EmailStr

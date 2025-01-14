@@ -22,6 +22,7 @@ const formSchema = z.object({
 function ProfileEdit() {
 	const { accessToken } = useContext(AuthContext);
 	const [preview, setPreview] = useState();
+	const [isError, setIsError] = useState(false);
 
 	const {
 		register,
@@ -65,42 +66,45 @@ function ProfileEdit() {
 	}, [accessToken]);
 
 	const onSubmit = async (data) => {
-		console.log("data sent");
-		// const url = "http://127.0.0.1:8000/users/";
-		// const options = {
-		// 	method: "POST",
-		// 	headers: {
-		// 		"Content-Type": "application/json",
-		// 	},
-		// 	body: JSON.stringify({
-		// 		photo: "profile.png",
-		// 		bio: "hello",
-		// 		first_name: data.firstname,
-		// 		last_name: data.lastname,
-		// 		username: data.username,
-		// 		email: data.email,
-		// 		password: data.password,
-		// 	}),
-		// };
+		console.log(data);
+		const url = "http://127.0.0.1:8000/users/";
+    const options = {
+      method: "PUT",
+      headers: {
+        "Authorization": `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        photo: "profile.png",
+        bio: data.bio,
+        first_name: data.firstname || null,
+				last_name: data.lastname || null,
+				username: data.username || null,
+				email: data.email || null,
+				password: data.password || null,
+			}),
+		};
 
-		// try {
-		// 	const response = await fetch(url, options);
-		// 	if (response.status === 201) {
-		// 		setIsError(false);
-		// 		window.location.href = "/login";
-		// 	}
-		// 	const responseData = await response.json();
-		// 	console.log(responseData.email);
-		// } catch (error) {
-		// 	setIsError(true);
-		// 	console.error(error);
-		// }
+		try {
+			const response = await fetch(url, options);
+			if (response.ok){
+			  setIsError(false);
+  			const responseData = await response.json();
+  			console.log(responseData);
+			}
+		} catch (error) {
+  		setIsError(true);
+			console.error(error);
+		}
 	};
 	return (
 		<>
 			<div className="bg-gray-50 border rounded-3xl">
 				<div className="bg-gray-200 w-full h-52 rounded-3xl bg-cover bg-[url('https://img.freepik.com/free-vector/minimal-flowing-lines-background_1048-20229.jpg?t=st=1736620338~exp=1736623938~hmac=d1acc5682cb9e2e8cf8841ec63cad5458864670fb8e89402468017b447f91a3e&w=500')]"></div>
 				<div className="py-4 px-5 text-center">
+				{
+				isError && <div className="mb-4 text-red-500">An error occurred while updating your profile. Please check your information and try again.</div>
+        }
 					<form onSubmit={handleSubmit(onSubmit)}>
 						<img
 							src={preview}
