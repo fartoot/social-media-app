@@ -1,6 +1,7 @@
 from fastapi import Depends, Response , APIRouter, HTTPException
 from typing import List
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 from ..database import get_db
 from .. import models
 from .. import schemas
@@ -41,20 +42,26 @@ def get_profile(user_id: int = Depends(oauth2.verify_access_token), db: Session 
     else:
         return Response(status_code=404)
 
-@router.put("/",status_code=201,response_model=schemas.ResponseUser)
+@router.put("/",status_code=201)
 def edit_user(updated_user : schemas.UpdateUser, user_id: int = Depends(oauth2.verify_access_token), db: Session = Depends(get_db)):
     user_found = db.query(models.User).filter(models.User.id == user_id)
     user = user_found.first()
-    
+
     if user is None:
-        raise HTTPException(status_code=404, detail=f"user with id: {id} does not exist")
-    
+        raise HTTPException(status_code=404, detail="user does not exist")
+
     if user:
-        user_data = {**updated_user.dict(exclude_none=True)}
-        if user_data.get("password"):
-            user_data["password"] = utils.hash(user_data["password"])
-        user_found.update(user_data)
-        db.commit()
+        try:
+            user_data = {**updated_user.dict(exclude_none=True)}
+            if user_data.get("password"):
+                user_data["password"] = utils.hash(user_data["password"])
+            user_found.update(user_data)
+            db.commit()
+        except IntegrityError as e:
+            raise HTTPException(status_code=404, detail="Username or email address is already in use")
+        except Exception as e:
+            raise HTTPException(status_code=404, detail="Update failed")
+
         return user
     else:
-        return Response(status_code=404)
+        raise HTTPException(status_code=404, detail="User not found")
