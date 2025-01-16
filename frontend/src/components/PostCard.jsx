@@ -28,7 +28,7 @@ function PostCard({slug, firstName, lastName,photo, username,  createdAt, conten
     <>
       <div className="bg-gray-50 border rounded-md mb-7 p-7 w-full md:min-w-96">
         <div className="flex">
-          <img src={`data:image/jpeg;base64,${photo}`} className="bg-gray-200 w-12 object-cover object-center h-12 rounded-full me-5" alt="" />
+          <img src={`${photo}`} className="bg-gray-200 w-12 object-cover object-center h-12 rounded-full me-5" alt="" />
           <div>
             <Link to={`/profile/${slug}`}>
               <p className="capitalize">{firstName} {lastName}</p>

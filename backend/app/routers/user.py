@@ -42,7 +42,7 @@ def get_profile(user_id: int = Depends(oauth2.verify_access_token), db: Session 
     else:
         return Response(status_code=404)
 
-@router.put("/",status_code=201)
+@router.put("/",status_code=201, response_model=schemas.ResponseUser)
 def edit_user(updated_user : schemas.UpdateUser, user_id: int = Depends(oauth2.verify_access_token), db: Session = Depends(get_db)):
     user_found = db.query(models.User).filter(models.User.id == user_id)
     user = user_found.first()

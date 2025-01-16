@@ -39,7 +39,7 @@ function Profile() {
     <>
       <div className="bg-gray-50 border rounded-3xl">
         <div className="bg-gray-200 w-full h-52 rounded-3xl bg-cover bg-[url('https://img.freepik.com/free-vector/minimal-flowing-lines-background_1048-20229.jpg?t=st=1736620338~exp=1736623938~hmac=d1acc5682cb9e2e8cf8841ec63cad5458864670fb8e89402468017b447f91a3e&w=500')]"></div>
-        <img src={`data:image/jpeg;base64,${profileData.photo}`} className="bg-gray-200 w-44 h-44 object-cover object-center rounded-full mx-auto border-8 border- border-white -mt-20" alt="" />
+        <img src={`${profileData.photo}`} className="bg-gray-200 w-44 h-44 object-cover object-center rounded-full mx-auto border-8 border- border-white -mt-20" alt="" />
         <div className="py-4 px-5 text-center">
           <div className="mb-4">
             <h2 className="text-2xl">
