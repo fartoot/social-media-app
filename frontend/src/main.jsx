@@ -32,6 +32,7 @@ createRoot(document.getElementById("root")).render(
             <Route path="/" element={<GuestLayout />}>
               <Route index element={<Home />} />
               <Route path="/profile/:id" element={<Profile />} />
+              <Route path="/profile" element={<Profile />} />
               <Route path="/profile/edit/:id" element={<ProfileEdit />} />
             </Route>
           </Route>

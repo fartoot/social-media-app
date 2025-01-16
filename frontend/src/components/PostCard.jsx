@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { Ellipsis } from 'lucide-react';
 function PostCard({slug, firstName, lastName,photo, username,  createdAt, content, votes, post_id, refresh, setRefresh}) {
   const {accessToken} = useContext(AuthContext)
 
@@ -48,8 +49,8 @@ function PostCard({slug, firstName, lastName,photo, username,  createdAt, conten
           {content}
         </div>
         <div className="leading-none -mb-2 flex">
-          <button className="ml-auto">
-            ...
+          <button className="mx-auto mr-1.5">
+           <Ellipsis size={18} /> 
           </button>
         </div>
       </div>

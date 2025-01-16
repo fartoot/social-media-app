@@ -1,18 +1,20 @@
 import { useContext, useEffect, useState } from "react"
 import { AuthContext } from "../context/AuthContext"
 import { useParams } from "react-router-dom"
+import { ProfileContext } from "../context/ProfileContext"
 
 function Profile() {
 
-  const {accessToken} = useContext(AuthContext)
-  const [profileData, setProfileData] = useState({"first_name": null, "last_name": null,"username":null, "bio": null})
-  console.log(accessToken)
+  const { accessToken } = useContext(AuthContext)
+  const { profile } = useContext(ProfileContext)
+  const [profileData, setProfileData] = useState({ "first_name": null, "last_name": null, "username": null, "bio": null })
   
-  const params = useParams() 
+  const params = useParams()
+  const profileId = params.id || profile.id
   
  useEffect(()=>{
    const getUser = async () =>{
-     const url = `http://127.0.0.1:8000/users/${params.id}`;
+     const url = `http://127.0.0.1:8000/users/${profileId}`;
      const options = {
        method: 'GET',
        headers: {
@@ -25,7 +27,6 @@ function Profile() {
        const data = await response.json();
        if (response.ok) {
          setProfileData(data)
-         console.log(data)
        }
      } catch (error) {
        console.error(error);

@@ -1,7 +1,7 @@
 import PostCard from "../components/PostCard"
 import { useState, useEffect, useContext } from "react"
 import { AuthContext } from "../context/AuthContext"
-import moment from"moment";
+import moment from "moment";
 import { useOutletContext } from "react-router-dom";
 
 function Home() {
@@ -19,7 +19,6 @@ function Home() {
       const response = await fetch("http://127.0.0.1:8000/posts/", options)
       const postsData = await response.json()
       setPosts(postsData)
-      console.log(postsData)
     }
     fetchPosts()
   }, [accessToken, refresh])
