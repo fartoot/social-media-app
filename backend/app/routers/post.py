@@ -155,3 +155,37 @@ def update_post(id: int,updated_post: schemas.UpdatePost, db: Session = Depends(
     else:
         return Response(status_code=404)
 
+
+@router.get("/user/{id}", status_code=201)
+def get_posts_by_user_id(id: int, db: Session = Depends(get_db), user_id: int = Depends(oauth2.verify_access_token)):
+  posts = db.query(
+          models.Post,
+          func.count(models.Vote.post_id).label("votes")
+      ).join(
+          models.User,
+          models.Post.owner_id == models.User.id
+      ).outerjoin(
+          models.Vote,
+          models.Post.id == models.Vote.post_id
+      ).group_by(
+          models.Post.id,
+          models.User.id
+      ).filter(
+          models.Post.owner_id == id
+      ).order_by(
+          models.Post.created_at.desc()
+      ).limit(10).all()
+
+  result_posts = []
+  for post, votes in posts:
+      post_dict = {
+          "id": post.id,
+          "content": post.content,
+          "published": post.published,
+          "created_at": post.created_at,
+          "owner": post.owner,
+          "votes": votes
+      }
+      result_posts.append(post_dict)
+
+  return result_posts
