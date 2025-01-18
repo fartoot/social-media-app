@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import AsyncRequest from "../utils/request";
 
 const formSchema = z.object({
   content: z.string().min(1).max(200),
@@ -19,30 +19,18 @@ function CreatePostCard({className, refresh, setRefresh}) {
    } = useForm({
      resolver: zodResolver(formSchema),
    });
-  const navigate = useNavigate()
-   const onSubmit = async (data) => {
-     const url = 'http://127.0.0.1:8000/posts';
-      const options = {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'content-type': 'application/json'
-        },
-        body : JSON.stringify({
-          content: data.content
-        })
-      };
- 
-     try {
-       const response = await fetch(url, options);
-       const data = await response.json();
-       setRefresh(!refresh)
-       reset()
-     } catch (error) {
-       console.error(error);
-     }
-   }; 
   
+  const onSubmit = async (data) => {
+      try {
+        const body = JSON.stringify({ content: data.content })
+        const options = {"content-type": "application/json"}
+        await AsyncRequest('http://127.0.0.1:8000/posts', "POST", accessToken, body,options);
+        setRefresh(!refresh)
+        reset()
+      } catch (error) {
+        console.error(error);
+      }
+  }
   return (
     <>
       <form 

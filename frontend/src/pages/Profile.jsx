@@ -4,6 +4,7 @@ import { useOutletContext, useParams } from "react-router-dom";
 import { ProfileContext } from "../context/ProfileContext";
 import PostCard from "../components/PostCard";
 import moment from "moment";
+import AsyncRequest from "../utils/request";
 
 function Profile() {
 	const { accessToken } = useContext(AuthContext);
@@ -22,48 +23,24 @@ function Profile() {
 
 	useEffect(() => {
 		const getUser = async () => {
-			const url = `http://127.0.0.1:8000/users/${profileId}`;
-			const options = {
-				method: "GET",
-				headers: {
-					Authorization: `Bearer ${accessToken}`,
-				},
-			};
-
-			try {
-				const response = await fetch(url, options);
-				const data = await response.json();
-				if (response.ok) {
-					console.log(data);
-					setProfileData(data);
-				}
-			} catch (error) {
-				console.error(error);
-			}
+     	try {
+        const data = await AsyncRequest(`http://127.0.0.1:8000/users/${profileId}`, "GET", accessToken);
+        setProfileData(data);
+      } catch (error) {
+        console.error(error);
+      }
 		};
 		const getPostsByUser = async () => {
-			const url = `http://127.0.0.1:8000/posts/user/${profileId}`;
-			const options = {
-				method: "GET",
-				headers: {
-					Authorization: `Bearer ${accessToken}`,
-				},
-			};
-
-			try {
-				const response = await fetch(url, options);
-				const data = await response.json();
-				if (response.ok) {
-					console.log(data);
-					setPosts(data);
-				}
-			} catch (error) {
-				console.error(error);
-			}
+  		try {
+        const data = await AsyncRequest( `http://127.0.0.1:8000/posts/user/${profileId}`, "GET", accessToken);
+        setPosts(data);
+      } catch (error) {
+        console.error(error);
+      }
 		};
 		getUser();
 		getPostsByUser();
-	}, [accessToken]);
+	}, [accessToken, refresh]);
 
 	return (
 		<>

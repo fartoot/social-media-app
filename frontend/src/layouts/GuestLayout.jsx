@@ -4,11 +4,11 @@ import CreatePostCard from "../components/CreatePostCard.jsx";
 import { useContext, useEffect, useState } from "react";
 import { ProfileContext } from "../context/ProfileContext.jsx";
 import { AuthContext } from "../context/AuthContext.jsx";
-import moment from"moment";
+import PopularPost from "../components/PopularPost.jsx";
+import RecentPost from "../components/RecentPost.jsx";
+import AsyncRequest from "../utils/request.jsx"
+import momentShort from "../utils/date.jsx"
 
-const moment_short = (timeAgo) =>{
-  return timeAgo.replace("a few seconds ago","just now").replace("a minute","1m").replace(" hours", "h").replace(" minutes", "m").replace(" days", "d").replace(" seconds", "s").replace(" years", "y");
-}
 
 function GuestLayout() {
   const [refresh, setRefresh] = useState(false)
@@ -21,72 +21,39 @@ function GuestLayout() {
   const {profile, setProfile} = useContext(ProfileContext)
   
   useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-          const options = {
-            method: 'GET',
-            headers: {
-              Authorization: `Bearer ${accessToken}`
-            }
-          };
-          const response = await fetch("http://127.0.0.1:8000/users/", options)
-          const profileData = await response.json()
-          if (response.ok){
-            setProfile(profileData)
+    const fetchProfile = async () => {
+          try {
+            const profileData = await AsyncRequest("http://127.0.0.1:8000/users/", "GET", accessToken);
+            setProfile(profileData);
+          } catch (error) {
+            console.error(error);
           }
-      }
-      catch (error) {
-        console.log("error", error)
-      }
-    }
-      fetchPosts()
+        }
+    
+    const getRecentPostsByMe = async () => {
+          try {
+            const data = await AsyncRequest("http://127.0.0.1:8000/posts/recent", "GET", accessToken);
+            setRecentPosts(data);
+          } catch (error) {
+            console.error(error);
+          }
+        }
+    getRecentPostsByMe()
+    fetchProfile();
   }, [accessToken])
   
   useEffect(()=>{
     const getPopularPosts = async () => {
-      const url = 'http://127.0.0.1:8000/posts/popular/';
-      const options = {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${accessToken}`
+        try {
+          const data = await AsyncRequest("http://127.0.0.1:8000/posts/popular/", "GET", accessToken);
+          setPopularPosts(data);
+        } catch (error) {
+          console.error(error);
         }
-      };
-      
-      try {
-        const response = await fetch(url, options);
-        const data = await response.json();
-        if (response.ok){
-          setPopularPosts(data)
-        }
-      } catch (error) {
-        console.error(error);
-      }
     }
     getPopularPosts()
-  },[])
+  },[refresh])
   
-  useEffect(() => {
-    const getRecentPostsByMe = async () => {
-      const url = 'http://127.0.0.1:8000/posts/recent';
-      const options = {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${accessToken}` 
-        }
-      };
-      
-      try {
-        const response = await fetch(url, options);
-        const data = await response.json();
-        if (response.ok){
-          setRecentPosts(data)
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    getRecentPostsByMe()
-  }, [refresh])
   
   return (
     <>
@@ -97,15 +64,7 @@ function GuestLayout() {
           <h2 className="text-left w-full text-gray-800 ms-2 mb-2">Recent Liked</h2>
           {
             recentPosts.map((data)=>(
-              <div key={data.key} className="bg-gray-100 border text-gray-800 rounded-full w-full px-4 py-2 flex justify-between items-center">
-                <div className="space-x-1">
-                  <span className="text-sm capitalize">{data.Post.owner.first_name} { data.Post.owner.last_name }</span>
-                  <span className="text-xs text-gray-600">@{ data.Post.owner.username }</span>
-                </div>
-                <span className="text-xs text-gray-600">
-                  { moment_short(moment(data.Vote.created_at).fromNow())}
-                </span>
-            </div>
+            <RecentPost key={data.key} full_name={`${data.Post.owner.first_name} ${data.Post.owner.last_name}`} username={data.Post.owner.username} date={momentShort(data.Vote.created_at)} />
             ))
           }
         </div>
@@ -127,23 +86,11 @@ function GuestLayout() {
           </div>
           {
             popularPosts.map((data)=>(
-              <div key={data.key} className="bg-white border text-gray-600 rounded-2xl w-full px-4 py-2">
-                <div className="flex justify-between items-center">
-                  <div className="space-x-1 mb-2">
-                    <span className="text-xs capitalize">{data.owner.first_name} { data.owner.last_name} </span>
-                  </div>
-                  <div>
-                  <span className="text-sm -me-1">{data.votes}</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" className="inline fill-gray-600" viewBox="0 0 256 256">
-                      <path d="M173.66,138.34a8,8,0,0,1-11.32,11.32L128,115.31,93.66,149.66a8,8,0,0,1-11.32-11.32l40-40a8,8,0,0,1,11.32,0Z"></path>
-                    </svg>
-                  </div>
-                </div>
-                <p className="text-gray-700 text-sm">{data.content} </p>
-            </div>
+              <PopularPost key={data.id} full_name={`${data.owner.first_name} ${data.owner.last_name}`}  votes={data.votes} content={data.content} />
             ))
           }
         </div>
+        
       </div>
     </>
   );

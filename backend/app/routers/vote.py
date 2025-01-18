@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, Response
+from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from .. import database, oauth2, schemas, models
 
@@ -13,8 +14,8 @@ def vote(vote: schemas.CreateVote ,db: Session = Depends(database.get_db), user_
    if not vote_query.first():
       db.add(models.Vote(post_id=vote.post_id,user_id=user_id))
       db.commit()
-      return Response(status_code=201, content=f"User {user_id} add vote to post {vote.post_id}")
+      return JSONResponse(status_code=201, content=f"User {user_id} add vote to post {vote.post_id}")
    else:
         vote_query.delete()
         db.commit()
-        return Response(status_code=201, content=f"User {user_id} delete vote to post {vote.post_id}")
+        return JSONResponse(status_code=201, content=f"User {user_id} delete vote to post {vote.post_id}")

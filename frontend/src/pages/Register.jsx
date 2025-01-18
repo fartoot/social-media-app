@@ -4,6 +4,7 @@ import { z } from "zod";
 import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import AsyncRequest from "../utils/request";
 
 const formSchema = z.object({
   firstname: z.string().min(3).max(30),
@@ -28,32 +29,22 @@ function Register() {
   } = useForm({
     resolver: zodResolver(formSchema),
   });
+  
   const onSubmit = async (data) => {
-    const url = 'http://127.0.0.1:8000/users/';
-    const options = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        photo: "profile.png",
-        bio: "hello", 
-        first_name: data.firstname,
-        last_name: data.lastname,
-        username: data.username,
-        email: data.email,
-        password: data.password
-      })
-    };
-
     try {
-      const response = await fetch(url, options);
-      if (response.status === 201) {
-        setIsError(false);
-        window.location.href = '/login';
-      }
-      const responseData = await response.json();
-      console.log(responseData.email);
+      const body = JSON.stringify({
+          photo: "",
+          bio: "hello", 
+          first_name: data.firstname,
+          last_name: data.lastname,
+          username: data.username,
+          email: data.email,
+          password: data.password
+      })
+      const options = {"content-type": "application/json"}
+      await AsyncRequest('http://127.0.0.1:8000/users/', "POST", accessToken, body,options);
+      setIsError(false);
+      window.location.href = '/login';
     } catch (error) {
       setIsError(true);
       console.error(error);

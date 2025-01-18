@@ -22,11 +22,11 @@ createRoot(document.getElementById("root")).render(
           <Route
             path="/"
             element={
-                <ProtectRoute>
-                  <ProfileProvider>
-                    <WrapLayout />
-                  </ProfileProvider>
-                </ProtectRoute>
+              <ProtectRoute>
+                <ProfileProvider>
+                  <WrapLayout />
+                </ProfileProvider>
+              </ProtectRoute>
             }
           >
             <Route path="/" element={<GuestLayout />}>

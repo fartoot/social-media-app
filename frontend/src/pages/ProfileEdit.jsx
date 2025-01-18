@@ -5,7 +5,9 @@ import { AuthContext } from "../context/AuthContext";
 import { useParams } from "react-router-dom";
 import { z } from "zod";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { CircleX, CloudUpload, CircleCheck  } from 'lucide-react';
 import { ProfileContext } from "../context/ProfileContext";
+import AsyncRequest from "../utils/request";
 
 const formSchema = z.object({
 	firstname: z.string().min(3).max(30),
@@ -54,66 +56,42 @@ function ProfileEdit() {
 
 	useEffect(() => {
 		const getUser = async () => {
-			const url = `http://127.0.0.1:8000/users/${params.id}`;
-			const options = {
-				method: "GET",
-				headers: {
-					Authorization: `Bearer ${accessToken}`,
-				},
-			};
-
-			try {
-				const response = await fetch(url, options);
-				const data = await response.json();
-				if (response.ok) {
-					reset({
+  		try {
+        const data = await AsyncRequest(`http://127.0.0.1:8000/users/${params.id}`, "GET", accessToken);
+        reset({
 						firstname: data.first_name,
 						lastname: data.last_name,
 						username: data.username,
 						bio: data.bio,
 						email: data.email,
 					});
-					setPreview(`${data.photo}`);
-				}
-			} catch (error) {
-				console.error(error);
-			}
+				setPreview(`${data.photo}`);
+      } catch (error) {
+        console.error(error);
+      }
 		};
 		getUser();
 	}, [accessToken]);
 
 	const onSubmit = async (data) => {
-		console.log(data);
-		const url = "http://127.0.0.1:8000/users/";
-		const options = {
-			method: "PUT",
-			headers: {
-				Authorization: `Bearer ${accessToken}`,
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				photo: base64IMG,
-				bio: data.bio,
-				first_name: data.firstname || null,
-				last_name: data.lastname || null,
-				username: data.username || null,
-				email: data.email || null,
-				password: data.password || null,
-			}),
-		};
-
 		try {
-			const response = await fetch(url, options);
-			if (response.ok) {
-				const profileData = await response.json();
-				setProfile(profileData);
+        const body =  JSON.stringify({
+    				photo: base64IMG,
+    				bio: data.bio,
+    				first_name: data.firstname || null,
+    				last_name: data.lastname || null,
+    				username: data.username || null,
+    				email: data.email || null,
+    				password: data.password || null,
+  			})
+        const options = {"content-type": "application/json"}
+        const response = await AsyncRequest('http://127.0.0.1:8000/users/', "PUT", accessToken, body,options);
+        setProfile(response);
 				setMessage(true);
-			} else {
-				setMessage(false);
-			}
-		} catch (error) {
-			setMessage(false);
-		}
+    } catch (error) {
+      setMessage(false);
+      console.error(error);
+    }
 	};
 	return (
 		<>
@@ -131,15 +109,7 @@ function ProfileEdit() {
 								/>
 								<label htmlFor="profileImage">
 									<div className="bg-gray-100 rounded-full absolute shadow top-2.5 right-2.5 p-1.5 hover:bg-gray-200">
-										<svg
-											xmlns="http://www.w3.org/2000/svg"
-											width="25px"
-											height="25px"
-											className="fill-gray-600"
-											viewBox="0 0 256 256"
-										>
-											<path d="M178.34,165.66,160,147.31V208a8,8,0,0,1-16,0V147.31l-18.34,18.35a8,8,0,0,1-11.32-11.32l32-32a8,8,0,0,1,11.32,0l32,32a8,8,0,0,1-11.32,11.32ZM160,40A88.08,88.08,0,0,0,81.29,88.68,64,64,0,1,0,72,216h40a8,8,0,0,0,0-16H72a48,48,0,0,1,0-96c1.1,0,2.2,0,3.29.12A88,88,0,0,0,72,128a8,8,0,0,0,16,0,72,72,0,1,1,100.8,66,8,8,0,0,0,3.2,15.34,7.9,7.9,0,0,0,3.2-.68A88,88,0,0,0,160,40Z"></path>
-										</svg>
+									   <CloudUpload size={25} className="stroke-gray-600" />
 									</div>
 									<img
 										src={preview}
@@ -152,7 +122,8 @@ function ProfileEdit() {
 						{message !== null &&
 							(message ? (
 								<Alert variant="success" className="mb-5">
-									<svg
+								  <CircleCheck size={32} className="stroke-emerald-300" />
+									{/* <svg
 										xmlns="http://www.w3.org/2000/svg"
 										width="32"
 										height="32"
@@ -161,7 +132,7 @@ function ProfileEdit() {
 										viewBox="0 0 256 256"
 									>
 										<path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm45.66,85.66-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35a8,8,0,0,1,11.32,11.32Z"></path>
-									</svg>
+									</svg> */}
 									<AlertTitle>Success</AlertTitle>
 									<AlertDescription>
 										Profile was successfully updated.
@@ -169,15 +140,7 @@ function ProfileEdit() {
 								</Alert>
 							) : (
 								<Alert variant="error" className="mb-5">
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										width="32"
-										height="32"
-										className="fill-red-300"
-										viewBox="0 0 256 256"
-									>
-										<path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm37.66,130.34a8,8,0,0,1-11.32,11.32L128,139.31l-26.34,26.35a8,8,0,0,1-11.32-11.32L116.69,128,90.34,101.66a8,8,0,0,1,11.32-11.32L128,116.69l26.34-26.35a8,8,0,0,1,11.32,11.32L139.31,128Z"></path>
-									</svg>
+    						  <CircleX size={32}/>
 									<AlertTitle>Error</AlertTitle>
 									<AlertDescription>
 										An error occurred while updating profile. Please try again.

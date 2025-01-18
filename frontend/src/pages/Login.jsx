@@ -4,6 +4,7 @@ import { z } from "zod";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { Link ,useNavigate } from "react-router-dom";
+import AsyncRequest from "../utils/request";
 
 const formSchema = z.object({
   username: z.string().min(3).max(50),
@@ -26,23 +27,16 @@ function Login() {
     resolver: zodResolver(formSchema),
   });
   const onSubmit = async (data) => {
-    const url = "http://127.0.0.1:8000/login/";
-    const options = {
-      method: "POST",
-      headers: { "content-type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({username: data.username, password: data.password})
-    };
-
     try {
-      const response = await fetch(url, options);
-      const data = await response.json();
-      console.log(data);
-      setAccessToken(data.access_token)
-      navigate("/")
-    } catch (error) {
-      setIsError(true)
-      console.error(error);
-    }
+          const body = new URLSearchParams({username: data.username, password: data.password})
+          const options = {"content-type": "application/x-www-form-urlencoded"}
+          const resData = await AsyncRequest('http://127.0.0.1:8000/login/', "POST", accessToken, body,options);
+          setAccessToken(resData.access_token)
+          navigate("/")
+       } catch (error) {
+         setIsError(true)
+         console.error(error);
+       }
   };
   return (
     <>
