@@ -60,7 +60,7 @@ function GuestLayout() {
       <div className="w-full hidden lg:block space-y-20 self-start sticky top-4">
         <ProfileCard id={profile.id} fullName={ `${profile.first_name} ${profile.last_name}` } username={profile.username} bio={profile.bio} photo={profile.photo} />
         
-        <div className="w-96 bg-gray-50 border rounded-3xl p-8 space-y-2 flex flex-col items-center mx-auto">
+        <div className="w-96 bg-white border rounded-3xl p-8 space-y-2 flex flex-col items-center mx-auto">
           <h2 className="text-left w-full text-gray-800 ms-2 mb-2">Recent Liked</h2>
           {
             recentPosts.map((data)=>(
@@ -77,8 +77,8 @@ function GuestLayout() {
       </div>
       <div className="w-full hidden xl:inline-block space-y-5 self-start sticky top-4">
         <CreatePostCard className="w-96" refresh={refresh} setRefresh={setRefresh}/>
-        <div className="w-96 bg-gray-50 border rounded-3xl relative p-8 space-y-3 flex flex-col items-center mx-auto">
-          <div className="bg-gradient-to-t from-gray-50 from-55% rounded-b-3xl absolute bottom-0 h-20 w-full">
+        <div className="w-96 bg-white border rounded-3xl relative p-8 space-y-3 flex flex-col items-center mx-auto">
+          <div className="bg-gradient-to-t from-gray-50 from-40% rounded-b-3xl absolute bottom-0 h-20 w-full">
           </div>
           <div className="flex justify-between w-full px-3 mb-2">
             <h2 className="text-gray-800">Today's Popular Posts</h2>

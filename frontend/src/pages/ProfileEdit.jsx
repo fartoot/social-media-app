@@ -8,6 +8,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { CircleX, CloudUpload, CircleCheck  } from 'lucide-react';
 import { ProfileContext } from "../context/ProfileContext";
 import AsyncRequest from "../utils/request";
+import cover from "../assets/cover.jpg";
 
 const formSchema = z.object({
 	firstname: z.string().min(3).max(30),
@@ -96,7 +97,7 @@ function ProfileEdit() {
 	return (
 		<>
 			<div className="bg-gray-50 border rounded-3xl">
-				<div className="bg-gray-200 w-full h-52 rounded-3xl bg-cover bg-[url('https://img.freepik.com/free-vector/minimal-flowing-lines-background_1048-20229.jpg?t=st=1736620338~exp=1736623938~hmac=d1acc5682cb9e2e8cf8841ec63cad5458864670fb8e89402468017b447f91a3e&w=500')]"></div>
+			<div className="bg-gray-200 w-full h-52 rounded-3xl bg-cover" style={{ backgroundImage: `url(${cover})` }}></div>
 				<div className="py-4 px-5 text-center">
 					<form onSubmit={handleSubmit(onSubmit)}>
 						<div className="w-full">
@@ -123,16 +124,6 @@ function ProfileEdit() {
 							(message ? (
 								<Alert variant="success" className="mb-5">
 								  <CircleCheck size={32} className="stroke-emerald-300" />
-									{/* <svg
-										xmlns="http://www.w3.org/2000/svg"
-										width="32"
-										height="32"
-										className="fill-emerald-300"
-										fill="#000000"
-										viewBox="0 0 256 256"
-									>
-										<path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm45.66,85.66-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35a8,8,0,0,1,11.32,11.32Z"></path>
-									</svg> */}
 									<AlertTitle>Success</AlertTitle>
 									<AlertDescription>
 										Profile was successfully updated.
@@ -152,7 +143,7 @@ function ProfileEdit() {
 								{...register("firstname")}
 								type="text"
 								placeholder="First Name"
-								className="border rounded w-full py-2 px-3 text-gray-700 mb-2 focus:outline-none focus:border-gray-400"
+								className="border rounded-lg w-full py-2 px-3 text-gray-700 mb-2 focus:outline-none focus:border-gray-400"
 							/>
 							{errors.firstname && (
 								<div className="text-red-500 text-xs italic">
@@ -165,7 +156,7 @@ function ProfileEdit() {
 								{...register("lastname")}
 								type="text"
 								placeholder="Last Name"
-								className="border rounded w-full py-2 px-3 text-gray-700 mb-2 focus:outline-none focus:border-gray-400"
+								className="border rounded-lg w-full py-2 px-3 text-gray-700 mb-2 focus:outline-none focus:border-gray-400"
 							/>
 							{errors.lastname && (
 								<div className="text-red-500 text-xs italic">
@@ -178,7 +169,7 @@ function ProfileEdit() {
 								{...register("username")}
 								type="text"
 								placeholder="Username"
-								className="border rounded w-full py-2 px-3 text-gray-700 mb-2 focus:outline-none focus:border-gray-400"
+								className="border rounded-lg w-full py-2 px-3 text-gray-700 mb-2 focus:outline-none focus:border-gray-400"
 							/>
 							{errors.username && (
 								<div className="text-red-500 text-xs italic">
@@ -190,7 +181,7 @@ function ProfileEdit() {
 							<textarea
 								{...register("bio")}
 								placeholder="Bio"
-								className="border rounded w-full py-2 px-3 text-gray-700 mb-2 focus:outline-none focus:border-gray-400"
+								className="border rounded-lg w-full py-2 px-3 text-gray-700 mb-2 focus:outline-none focus:border-gray-400"
 							/>
 							{errors.bio && (
 								<div className="text-red-500 text-xs italic">
@@ -203,7 +194,7 @@ function ProfileEdit() {
 								{...register("email")}
 								type="text"
 								placeholder="Email"
-								className="border rounded w-full py-2 px-3 text-gray-700 mb-2 focus:outline-none focus:border-gray-400"
+								className="border rounded-lg w-full py-2 px-3 text-gray-700 mb-2 focus:outline-none focus:border-gray-400"
 							/>
 							{errors.email && (
 								<div className="text-red-500 text-xs italic">
@@ -216,7 +207,7 @@ function ProfileEdit() {
 								{...register("password")}
 								type="password"
 								placeholder="*******"
-								className="border rounded w-full py-2 px-3 text-gray-700 mb-2 focus:outline-none focus:border-gray-400"
+								className="border rounded-lg w-full py-2 px-3 text-gray-700 mb-2 focus:outline-none focus:border-gray-400"
 							/>
 							{errors.password && (
 								<div className="text-red-500 text-xs italic">
@@ -227,7 +218,7 @@ function ProfileEdit() {
 						<div className="flex items-center justify-center">
 							<button
 								type="submit"
-								className="bg-gray-400 hover:bg-gray-500 text-white py-2 px-4 rounded"
+								className="bg-white border border-gray-200 hover:bg-gray-100 text-gray-600 py-2 px-6 rounded-full shadow-sm"
 							>
 								Update
 							</button>

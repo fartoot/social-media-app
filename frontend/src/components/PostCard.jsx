@@ -19,7 +19,7 @@ function PostCard({slug, firstName, lastName,photo, username,  createdAt, conten
 
   return (
     <>
-      <div className="bg-gray-50 border rounded-md mb-7 p-7 w-full md:min-w-96">
+      <div className="bg-white border rounded-md mb-7 p-7 w-full md:min-w-96">
         <div className="flex">
           <img src={photo} className="bg-gray-200 w-12 object-cover object-center h-12 rounded-full me-5" alt="" />
           <div>
@@ -31,7 +31,7 @@ function PostCard({slug, firstName, lastName,photo, username,  createdAt, conten
           <div className="text-gray-600 text-sm leading-6">&nbsp;&nbsp;{createdAt}</div>
           <div className="ml-auto flex flex-col items-center">
             <button onClick={() => vote(post_id)}> 
-              <CircleChevronUp size={28} className='stroke-gray-500' />
+              <CircleChevronUp size={28} strokeWidth={1.5} className='stroke-gray-500 bg-gray-50 rounded-full' />
             </button>
             <span className="text-sm text-gray-500">{ votes } up</span>
           </div>

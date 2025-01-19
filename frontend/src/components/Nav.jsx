@@ -22,22 +22,22 @@ function Nav() {
 						<span className="sr-only">Toggle navigation menu</span>
 					</Button>
 				</SheetTrigger>
-				<Link to="/" className="font-mono tracking-wider mx-auto lg:hidden">
+				<Link to="/" className="font-mono text-gray-800 tracking-wider mx-auto lg:hidden">
 					socialMedia
 				</Link>
 				<SheetContent side="left">
 					<Link to="#" className="mr-6 hidden lg:flex">
-						<Link to="/" className="font-mono tracking-wider">
+						<Link to="/" className="font-mono text-gray-800 tracking-wider">
 							socialMedia
 						</Link>
 					</Link>
 					<div className="grid gap-2 py-6">
 						{accessToken ? (
 							<>
-								<Link to="/" className="flex w-full items-center py-2 text-lg">
+								<Link to="/" className="flex w-full items-center text-gray-800 py-2 text-lg">
 									Home
 								</Link>
-								<Link to="profile" className="flex w-full items-center py-2 text-lg">
+								<Link to="profile" className="flex w-full items-center text-gray-800 py-2 text-lg">
 									Profile
 								</Link>
                 <button onClick={logout} className="flex w-full items-center py-2 text-lg text-red-600">
@@ -58,7 +58,7 @@ function Nav() {
 				</SheetContent>
 			</Sheet>
 			<Link to="#" className="mr-6 hidden lg:flex">
-				<Link to="/" className="font-mono tracking-wider	">
+				<Link to="/" className="font-mono text-gray-800 tracking-wider	">
 					socialMedia
 				</Link>
 			</Link>
@@ -67,13 +67,13 @@ function Nav() {
 					<>
 						<Link
 							to="/"
-							className="group inline-flex h-9 w-max items-center justify-center rounded-full bg-white px-4 py-2 text-gray-700 text-sm font-medium transition-colors hover:bg-gray-50 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none "
+							className="group inline-flex h-9 w-max items-center justify-center rounded-full bg-white px-4 py-2 text-gray-800 text-sm font-medium transition-colors hover:bg-gray-50 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none "
 						>
 							Home
 						</Link>
 						<Link
 							to="profile"
-							className="group inline-flex h-9 w-max items-center justify-center rounded-full bg-white px-4 py-2 text-gray-700 text-sm font-medium transition-colors hover:bg-gray-50 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none "
+							className="group inline-flex h-9 w-max items-center justify-center rounded-full bg-white px-4 py-2 text-gray-800 text-sm font-medium transition-colors hover:bg-gray-50 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none "
 						>
 							Profile
 						</Link>
@@ -88,13 +88,13 @@ function Nav() {
 					<>
 						<Link
 							to="register"
-							className="group inline-flex h-9 w-max items-center justify-center rounded-full bg-white px-4 py-2 text-gray-700 text-sm font-medium transition-colors hover:bg-gray-50 hover:text-gray-900 focus:text-gray-900 focus:outline-none "
+							className="group inline-flex h-9 w-max items-center justify-center rounded-full bg-white px-4 py-2 text-gray-800 text-sm font-medium transition-colors hover:bg-gray-50 hover:text-gray-900 focus:text-gray-900 focus:outline-none "
 						>
 							Register
 						</Link>
 						<Link
 							to="login"
-							className="group shadow-md inline-flex h-9 w-max items-center justify-center rounded-full bg-gray-50 px-4 py-2 text-gray-700 text-sm font-medium transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none "
+							className="group shadow-md inline-flex h-9 w-max items-center justify-center rounded-full bg-gray-50 px-4 py-2 text-gray-800 text-sm font-medium transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none "
 						>
 							Login
 						</Link>

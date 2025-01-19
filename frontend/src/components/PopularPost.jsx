@@ -3,7 +3,7 @@ import { ChevronUp } from 'lucide-react';
 function PopularPost({full_name,votes,content}) {
 	return (
 		<div
-			className="bg-white border text-gray-600 rounded-2xl w-full px-4 py-2"
+			className="bg-gray-50 border text-gray-600 rounded-2xl w-full px-4 py-2"
 		>
 			<div className="flex justify-between items-center">
 				<div className="space-x-1 mb-2">

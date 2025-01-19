@@ -52,20 +52,20 @@ function Register() {
   };
   return (
     <>
-      <div className="mt-52 flex flex-col items-center justify-center w-full">
+      <div className="mt-36 flex flex-col items-center justify-center w-full">
         {
           isError && <div className="mb-4 text-red-500">This username or email is already registered. Please try different ones.</div>
         }
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-96"
+          className="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4 w-96"
         >
           <div className="mb-4">
             <input
               type="text"
               placeholder="John"
               {...register("firstname")}
-              className="border rounded w-full py-2 px-3 text-gray-700 mb-2 focus:outline-none focus:border-gray-400"
+              className="border rounded-lg w-full py-2 px-3 text-gray-700 mb-2 focus:outline-none focus:border-gray-400"
             />
             {errors.firstname && (
               <div className="text-red-500 text-xs italic">
@@ -78,7 +78,7 @@ function Register() {
               type="text"
               placeholder="Taylor"
               {...register("lastname")}
-              className="border rounded w-full py-2 px-3 text-gray-700 mb-2 focus:outline-none focus:border-gray-400"
+              className="border rounded-lg w-full py-2 px-3 text-gray-700 mb-2 focus:outline-none focus:border-gray-400"
             />
             {errors.lastname && (
               <div className="text-red-500 text-xs italic">
@@ -91,7 +91,7 @@ function Register() {
               type="text"
               placeholder="JohnTaylor123"
               {...register("username")}
-              className="border rounded w-full py-2 px-3 text-gray-700 mb-2 focus:outline-none focus:border-gray-400"
+              className="border rounded-lg w-full py-2 px-3 text-gray-700 mb-2 focus:outline-none focus:border-gray-400"
             />
             {errors.username && (
               <div className="text-red-500 text-xs italic">
@@ -104,7 +104,7 @@ function Register() {
               type="text"
               placeholder="john@gmail.com"
               {...register("email")}
-              className="border rounded w-full py-2 px-3 text-gray-700 mb-2 focus:outline-none focus:border-gray-400"
+              className="border rounded-lg w-full py-2 px-3 text-gray-700 mb-2 focus:outline-none focus:border-gray-400"
             />
             {errors.email && (
               <div className="text-red-500 text-xs italic">
@@ -117,7 +117,7 @@ function Register() {
               type="password"
               placeholder="*******"
               {...register("password")}
-              className="border rounded w-full py-2 px-3 text-gray-700 mb-2 focus:outline-none focus:border-gray-400"
+              className="border rounded-lg w-full py-2 px-3 text-gray-700 mb-2 focus:outline-none focus:border-gray-400"
             />
             {errors.password && (
               <div className="text-red-500 text-xs italic">
@@ -128,7 +128,7 @@ function Register() {
           <div className="flex items-center justify-center">
             <button
               type="submit"
-              className="bg-gray-400 hover:bg-gray-500 text-white py-2 px-4 rounded"
+              className="bg-gray-50 hover:bg-gray-100 text-gray-500 py-2 px-6 border border-gray-300 rounded-full shadow-sm"
             >
               Sign Up
             </button>
