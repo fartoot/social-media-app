@@ -11,7 +11,7 @@ def test_root(client):
 
 def test_login_user(client,created_user):
     user = {
-                "username": created_user["email"],
+                "username": created_user["username"],
                 "password": created_user["password"]
             }
  
@@ -26,17 +26,17 @@ def test_login_user(client,created_user):
     
     
     
-@pytest.mark.parametrize("email, password, status_code",[
-    ("wrongemail@gmail.com","test123",403),
-    ("test@gmail.com","wrongpassword",403),
-    ("wrongemail@gmail.com","wrongpassword",403),
+@pytest.mark.parametrize("username, password, status_code",[
+    ("wronguser","test123",403),
+    ("test123","wrongpassword",403),
+    ("wronguser","wrongpassword",403),
     (None,"test123",422),
-    ("test@gmail.com",None,422),
+    ("test123",None,422),
 ])
-def test_incorrect_login(client,email,password,status_code):
+def test_incorrect_login(client,username,password,status_code):
 
     user = {
-                "username": email,
+                "username": username,
                 "password": password 
             }
     res = client.post("/login",data=user)

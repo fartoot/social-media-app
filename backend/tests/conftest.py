@@ -48,17 +48,22 @@ def client(session):
 def created_user(client):
 
     user = {
-                "email": "test@gmail.com",
-                "password": "test123"
-            }
+      "photo" : "profile.png",
+      "bio": "hello",
+      "first_name" : "test",
+      "last_name" : "testing",
+      "username" : "test123",
+      "email": "test@example.com",
+      "password": "test123123"
+    }
     
     res = client.post("/users/",json=user)
     new_user = schemas.ResponseUser(**res.json())
     assert res.status_code == 201
-    assert new_user.email == "test@gmail.com" 
+    assert new_user.username == "test123" 
 
     created_user = res.json()
-    created_user["password"]= user["password"]
+    created_user["password"] = user["password"]
     return created_user
 
 @pytest.fixture
@@ -79,17 +84,15 @@ def authorized_client(client, token):
 def create_fake_posts(created_user,session):
     fake_posts = [
         {
-            "title":"first title",
             "content":"first content",
-            "owner_id": created_user["id"] 
+            "owner_id": created_user["id"],
+            
         },
         {
-            "title":"second title",
             "content":"second content",
             "owner_id": created_user["id"] 
         },
         {
-            "title":"third title",
             "content":"third content",
             "owner_id": created_user["id"] 
         },
