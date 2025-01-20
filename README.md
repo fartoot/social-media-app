@@ -3,7 +3,7 @@
 
 A social media platform built with FastAPI and React that allows users to create profiles, share posts, and interact with other users through likes/votes.
 
-![App Home Screenshot](preview/home.png)
+![Home Screenshot](preview/home.jpg)
 
 ## Features
 
@@ -34,7 +34,11 @@ A social media platform built with FastAPI and React that allows users to create
 
 | Profile Page | Edit Profile Page |
 |-----------|--------------|
-|![Home](preview/profile.png)|![Profile](preview/edit-profile.png)|
+|![Profile](preview/profile.jpg)|![Edit Profile](preview/edit-profile.jpg)|
+
+| Login Page | Register Page |
+|-----------|--------------|
+|![Login](preview/login.jpg)|![Register](preview/register.jpg)|
 
 ## Tech Stack
 
