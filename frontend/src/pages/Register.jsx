@@ -63,7 +63,7 @@ function Register() {
           <div className="mb-4">
             <input
               type="text"
-              placeholder="John"
+              placeholder="fisrt name"
               {...register("firstname")}
               className="border rounded-lg w-full py-2 px-3 text-gray-700 mb-2 focus:outline-none focus:border-gray-400"
             />
@@ -76,7 +76,7 @@ function Register() {
           <div className="mb-4">
             <input
               type="text"
-              placeholder="Taylor"
+              placeholder="last name"
               {...register("lastname")}
               className="border rounded-lg w-full py-2 px-3 text-gray-700 mb-2 focus:outline-none focus:border-gray-400"
             />
@@ -89,7 +89,7 @@ function Register() {
           <div className="mb-4">
             <input
               type="text"
-              placeholder="JohnTaylor123"
+              placeholder="username"
               {...register("username")}
               className="border rounded-lg w-full py-2 px-3 text-gray-700 mb-2 focus:outline-none focus:border-gray-400"
             />
@@ -102,7 +102,7 @@ function Register() {
           <div className="mb-4">
             <input
               type="text"
-              placeholder="john@gmail.com"
+              placeholder="example@email.com"
               {...register("email")}
               className="border rounded-lg w-full py-2 px-3 text-gray-700 mb-2 focus:outline-none focus:border-gray-400"
             />
@@ -134,11 +134,11 @@ function Register() {
             </button>
           </div>
         </form>
-        <p className="text-gray-400">
+        <div className="text-gray-400">
           <p className="inline me-1">Already have an account?</p>
           <a className="text-gray-400 underline hover:text-gray-500" href='/login'>Login</a>
           
-        </p>
+        </div >
       </div>
     </>
   );

@@ -30,17 +30,22 @@ function GuestLayout() {
           }
         }
     
-    const getRecentPostsByMe = async () => {
-          try {
-            const data = await AsyncRequest("http://127.0.0.1:8000/posts/recent", "GET", accessToken);
-            setRecentPosts(data);
-          } catch (error) {
-            console.error(error);
-          }
-        }
-    getRecentPostsByMe()
     fetchProfile();
-  }, [accessToken])
+  }, [accessToken, setProfile])
+  
+  useEffect(() => {
+    const fetchRecentPostsLikedByMe = async () => {
+      try {
+        const data = await AsyncRequest("http://127.0.0.1:8000/posts/recent", "GET", accessToken);
+        setRecentPosts(data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchRecentPostsLikedByMe()
+    
+    // fetch only if created post or liked a post 
+  }, [accessToken, refresh])
   
   useEffect(()=>{
     const getPopularPosts = async () => {
@@ -52,7 +57,7 @@ function GuestLayout() {
         }
     }
     getPopularPosts()
-  },[refresh])
+  },[accessToken])
   
   
   return (
@@ -63,8 +68,8 @@ function GuestLayout() {
         <div className="w-96 bg-white border rounded-3xl p-8 space-y-2 flex flex-col items-center mx-auto">
           <h2 className="text-left w-full text-gray-800 ms-2 mb-2">Recent Liked</h2>
           {
-            recentPosts.map((data)=>(
-            <RecentPost key={data.key} full_name={`${data.Post.owner.first_name} ${data.Post.owner.last_name}`} username={data.Post.owner.username} date={momentShort(data.Vote.created_at)} />
+            recentPosts.map((data) => (
+            <RecentPost key={data.Post.id} full_name={`${data.Post.owner.first_name} ${data.Post.owner.last_name}`} username={data.Post.owner.username} date={momentShort(data.Vote.created_at)} />
             ))
           }
         </div>

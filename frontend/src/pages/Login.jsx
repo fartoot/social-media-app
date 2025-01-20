@@ -51,7 +51,7 @@ function Login() {
           <div className="mb-4">
             <input
               type="text"
-              placeholder="JamesTaylor123"
+              placeholder="username"
               {...register("username")}
               className="border rounded-lg w-full py-2 px-3 text-gray-700 mb-2 focus:outline-none focus:border-gray-400"
             />
@@ -83,10 +83,10 @@ function Login() {
             </button>
           </div>
         </form>
-        <p className="text-gray-400">
-          <p className="inline me-1">Don't have an account?</p>
+        <div className="text-gray-400">
+          <span className="inline me-1">Don't have an account?</span>
           <Link className="inline text-gray-400 underline hover:text-gray-500" to="/register">Create one</Link>
-        </p>
+        </div>
       </div>
     </>
   );
