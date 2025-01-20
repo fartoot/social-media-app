@@ -22,13 +22,12 @@ A social media platform built with FastAPI and React that allows users to create
   - Create text-based posts
   - View posts from all users
   - Vote/like posts
-  - Delete own posts
+  - Delete own posts (soon)
 
 - **Social Features**
   - View popular posts
   - See recent liked posts
   - Real-time vote counts
-  - User mentions
 
 ## Screenshots
 
@@ -39,6 +38,10 @@ A social media platform built with FastAPI and React that allows users to create
 | Login Page | Register Page |
 |-----------|--------------|
 |![Login](preview/login.jpg)|![Register](preview/register.jpg)|
+
+| Wireframe |
+|-----------|
+|![wireframe](frontend/wireframe.png)|
 
 ## Tech Stack
 
